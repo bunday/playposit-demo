@@ -46,6 +46,33 @@
       <v-col class="mb-5" cols="12">
         <h2 class="headline font-weight-bold mb-3">Camera Status</h2>
 
+        <v-form v-model="valid">
+          <v-row>
+            <v-col cols="12" md="4">
+              <v-text-field
+                v-model="camera.position.x"
+                label="X Coordinate"
+                required
+              ></v-text-field>
+            </v-col>
+
+            <v-col cols="12" md="4">
+              <v-text-field
+                v-model="camera.position.y"
+                label="Y Coordinate"
+                required
+              ></v-text-field>
+            </v-col>
+
+            <v-col cols="12" md="4">
+              <v-text-field
+                v-model="camera.position.z"
+                label="Z Coordinate"
+                required
+              ></v-text-field>
+            </v-col>
+          </v-row>
+        </v-form>
         <v-row justify="center">
           <v-card elevation="2" class="ma-2">
             <v-card-title>
@@ -114,12 +141,14 @@ export default {
       this.getPlayer();
     },
     play() {
-      if (this.player.paused()) { // if paused, play it
+      if (this.player.paused()) {
+        // if paused, play it
         this.player.play();
       }
     },
     pause() {
-      if (!this.player.paused()) { // if not paused, pause it
+      if (!this.player.paused()) {
+        // if not paused, pause it
         this.player.pause();
       }
     },
@@ -130,7 +159,7 @@ export default {
   },
   data: () => ({
     player: null,
-    camera: null,
+    camera: { position: { x: "", y: "", z: "" } },
     ecosystem: [
       {
         text: "vuetify-loader",
