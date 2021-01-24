@@ -21,9 +21,13 @@
         <h2 class="headline font-weight-bold mb-3">Controller</h2>
 
         <v-row justify="center">
-          <v-btn @click="setUpControlListener()" color="blue" class="ma-2 white--text">
+          <v-btn
+            @click="setUpControlListener()"
+            color="blue"
+            class="ma-2 white--text"
+          >
             <v-icon left blue> mdi-cog </v-icon>
-            Setup 
+            Setup
           </v-btn>
           <v-btn color="blue" class="ma-2 white--text">
             <v-icon left blue> mdi-play </v-icon>
@@ -44,16 +48,24 @@
 
         <v-row justify="center">
           <v-card elevation="2" class="ma-2">
-            <v-card-title> N/A</v-card-title>
+            <v-card-title>
+              {{
+                camera ? (camera.position ? camera.position.x : "N/A") : "N/A"
+              }}</v-card-title
+            >
             <v-card-text>X Coordinates</v-card-text>
           </v-card>
 
           <v-card elevation="2" class="ma-2">
-            <v-card-title> N/A</v-card-title>
+            <v-card-title> {{
+                camera ? (camera.position ? camera.position.y : "N/A") : "N/A"
+              }}</v-card-title>
             <v-card-text>Y Coordinates</v-card-text>
           </v-card>
           <v-card elevation="2" class="ma-2">
-            <v-card-title> N/A</v-card-title>
+            <v-card-title> {{
+                camera ? (camera.position ? camera.position.z : "N/A") : "N/A"
+              }}</v-card-title>
             <v-card-text>Z Coordinates</v-card-text>
           </v-card>
         </v-row>
