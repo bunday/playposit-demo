@@ -29,15 +29,15 @@
             <v-icon left blue> mdi-cog </v-icon>
             Setup
           </v-btn>
-          <v-btn color="blue" class="ma-2 white--text">
+          <v-btn @click="play()" color="blue" class="ma-2 white--text">
             <v-icon left blue> mdi-play </v-icon>
             Play
           </v-btn>
-          <v-btn color="blue" class="ma-2 white--text">
+          <v-btn @click="pause()" color="blue" class="ma-2 white--text">
             <v-icon left blue> mdi-pause </v-icon>
             Pause
           </v-btn>
-          <v-btn color="blue" class="ma-2 white--text">
+          <v-btn @click="stepForward()" color="blue" class="ma-2 white--text">
             <v-icon left blue> mdi-fast-forward </v-icon>
             Forward
           </v-btn>
@@ -57,15 +57,19 @@
           </v-card>
 
           <v-card elevation="2" class="ma-2">
-            <v-card-title> {{
+            <v-card-title>
+              {{
                 camera ? (camera.position ? camera.position.y : "N/A") : "N/A"
-              }}</v-card-title>
+              }}</v-card-title
+            >
             <v-card-text>Y Coordinates</v-card-text>
           </v-card>
           <v-card elevation="2" class="ma-2">
-            <v-card-title> {{
+            <v-card-title>
+              {{
                 camera ? (camera.position ? camera.position.z : "N/A") : "N/A"
-              }}</v-card-title>
+              }}</v-card-title
+            >
             <v-card-text>Z Coordinates</v-card-text>
           </v-card>
         </v-row>
@@ -86,13 +90,15 @@ export default {
   },
   methods: {
     setUpVideoVR() {
+      // get the ref for the video
       this.player = videojs(this.$refs.interactiveVideo);
-
+      // set up the VR + 360 projection
       this.player.vr({ debug: true, projection: "360" });
     },
     setUpControlListener() {
       const cameraStatus = this.player.vr().camera;
       this.camera = { ...cameraStatus };
+      // create a control object and attach a positio change listener to it
       const controls = new OrbitControls(
         this.player.vr().camera,
         this.player.vr().renderer.domElement
@@ -100,11 +106,26 @@ export default {
       controls.addEventListener("change", this.updateCameraPosition);
     },
     getPlayer() {
+      // get the camera status and update the camera data
       const cameraStatus = this.player.vr().camera;
       this.camera = { ...cameraStatus };
     },
     updateCameraPosition() {
       this.getPlayer();
+    },
+    play() {
+      if (this.player.paused()) { // if paused, play it
+        this.player.play();
+      }
+    },
+    pause() {
+      if (!this.player.paused()) { // if not paused, pause it
+        this.player.pause();
+      }
+    },
+    stepForward() {
+      const newTime = this.player.currentTime() + 10; // get the current time and go forward by 10sec
+      this.player.currentTime(newTime); // set that as the new time
     },
   },
   data: () => ({
