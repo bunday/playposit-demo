@@ -2,7 +2,6 @@
   <v-container>
     <v-row class="text-center">
       <v-col class="mb-4">
-
         <p class="subheading font-weight-regular">Instruction will go here</p>
       </v-col>
       <v-col class="mb-5" cols="12">
@@ -22,6 +21,10 @@
         <h2 class="headline font-weight-bold mb-3">Controller</h2>
 
         <v-row justify="center">
+          <v-btn @click="setUpControlListener()" color="blue" class="ma-2 white--text">
+            <v-icon left blue> mdi-cog </v-icon>
+            Setup 
+          </v-btn>
           <v-btn color="blue" class="ma-2 white--text">
             <v-icon left blue> mdi-play </v-icon>
             Play
@@ -60,10 +63,41 @@
 </template>
 
 <script>
+import videojs from "video.js";
+import "videojs-vr/dist/videojs-vr.min.js";
+import { OrbitControls } from "../plugins/OrbitControls.js";
+
 export default {
   name: "HelloWorld",
+  mounted() {
+    this.setUpVideoVR();
+  },
+  methods: {
+    setUpVideoVR() {
+      this.player = videojs(this.$refs.interactiveVideo);
 
+      this.player.vr({ debug: true, projection: "360" });
+    },
+    setUpControlListener() {
+      const cameraStatus = this.player.vr().camera;
+      this.camera = { ...cameraStatus };
+      const controls = new OrbitControls(
+        this.player.vr().camera,
+        this.player.vr().renderer.domElement
+      );
+      controls.addEventListener("change", this.updateCameraPosition);
+    },
+    getPlayer() {
+      const cameraStatus = this.player.vr().camera;
+      this.camera = { ...cameraStatus };
+    },
+    updateCameraPosition() {
+      this.getPlayer();
+    },
+  },
   data: () => ({
+    player: null,
+    camera: null,
     ecosystem: [
       {
         text: "vuetify-loader",
@@ -118,3 +152,16 @@ export default {
   }),
 };
 </script>
+<style scoped>
+@import url("https://vjs.zencdn.net/7.2.3/video-js.css");
+.hotspot {
+  width: 50px;
+  background: #e4bdbe;
+  border-radius: 10%;
+  padding: 5px;
+  cursor: pointer;
+}
+.hotspot:hover {
+  background: #e44db1;
+}
+</style>
