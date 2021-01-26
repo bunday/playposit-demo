@@ -7,7 +7,7 @@
       <v-col class="mb-5" cols="12">
         <video
           width="640"
-          height="300"
+          height="400"
           id="videojs-vr-player"
           ref="interactiveVideo"
           class="video-js vjs-default-skin"
@@ -109,6 +109,7 @@
 import videojs from "video.js";
 import "videojs-vr/dist/videojs-vr.min.js";
 import { OrbitControls } from "../plugins/OrbitControls.js";
+import { CSS2DRenderer, CSS2DObject } from "../plugins/CSS2DRenderer";
 
 export default {
   name: "HelloWorld",
@@ -131,6 +132,7 @@ export default {
         this.player.vr().renderer.domElement
       );
       controls.addEventListener("change", this.updateCameraPosition);
+      this.addElement()
     },
     getPlayer() {
       // get the camera status and update the camera data
@@ -156,65 +158,42 @@ export default {
       const newTime = this.player.currentTime() + 10; // get the current time and go forward by 10sec
       this.player.currentTime(newTime); // set that as the new time
     },
+    addElement() {
+      let { scene, camera } = this.player.vr();
+      var element = document.createElement("div");
+      element.className = "hotspot";
+      element.innerHTML = "Testing stuff";
+      var object = new CSS2DObject(element);
+      object.element.onclick = function () {
+        object.element.style.backgroundColor = "#f1060e";
+      };
+
+      object.position.x = 0;
+      object.position.y = 0;
+      object.position.z = 7;
+
+      // object.element.onclick = function () {
+      //   this.parent.position.y += 10;
+      // };
+      let labelRenderer = new CSS2DRenderer();
+      labelRenderer.setSize(40, 40);
+      labelRenderer.domElement.style.position = "absolute";
+      // labelRenderer.domElement.style.top = "280px";
+      labelRenderer.domElement.className = "hotspot";
+      document.body.appendChild(labelRenderer.domElement);
+
+      scene.add(object);
+      camera.position.z = 5;
+      labelRenderer.render(scene, camera);
+    },
   },
   data: () => ({
     player: null,
     camera: { position: { x: "", y: "", z: "" } },
-    ecosystem: [
-      {
-        text: "vuetify-loader",
-        href: "https://github.com/vuetifyjs/vuetify-loader",
-      },
-      {
-        text: "github",
-        href: "https://github.com/vuetifyjs/vuetify",
-      },
-      {
-        text: "awesome-vuetify",
-        href: "https://github.com/vuetifyjs/awesome-vuetify",
-      },
-    ],
-    importantLinks: [
-      {
-        text: "Documentation",
-        href: "https://vuetifyjs.com",
-      },
-      {
-        text: "Chat",
-        href: "https://community.vuetifyjs.com",
-      },
-      {
-        text: "Made with Vuetify",
-        href: "https://madewithvuejs.com/vuetify",
-      },
-      {
-        text: "Twitter",
-        href: "https://twitter.com/vuetifyjs",
-      },
-      {
-        text: "Articles",
-        href: "https://medium.com/vuetify",
-      },
-    ],
-    whatsNext: [
-      {
-        text: "Explore components",
-        href: "https://vuetifyjs.com/components/api-explorer",
-      },
-      {
-        text: "Select a layout",
-        href: "https://vuetifyjs.com/getting-started/pre-made-layouts",
-      },
-      {
-        text: "Frequently Asked Questions",
-        href:
-          "https://vuetifyjs.com/getting-started/frequently-asked-questions",
-      },
-    ],
   }),
 };
 </script>
-<style scoped>
+<style>
 @import url("https://vjs.zencdn.net/7.2.3/video-js.css");
 .hotspot {
   width: 50px;
