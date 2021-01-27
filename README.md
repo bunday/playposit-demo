@@ -1,5 +1,11 @@
-# playposit
+# playposit-demo
 
+## About Project 
+
+This demo uses `videovr-js` to combine `videojs` and `THREE.js` to give a 360 interractive video on the video
+
+### Known Limitation
+ Objects are static on the camera instead of being static on the particular scene
 ## Project setup
 ```
 npm install
@@ -20,5 +26,3 @@ npm run build
 npm run lint
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
