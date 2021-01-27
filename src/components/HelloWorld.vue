@@ -6,8 +6,8 @@
       </v-col>
       <v-col class="mb-5" cols="12">
         <video
-          width="640"
-          height="400"
+          width="980"
+          height="640"
           id="videojs-vr-player"
           ref="interactiveVideo"
           class="video-js vjs-default-skin"
@@ -226,5 +226,8 @@ export default {
 }
 .hotspot:hover {
   background: #e44db1;
+}
+.video-js .vjs-tech {
+  position: relative !important;
 }
 </style>
